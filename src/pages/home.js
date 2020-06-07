@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {makeStyles} from '@material-ui/core/styles';
 import {
   Card,
@@ -12,7 +13,6 @@ import {
   ListItemAvatar,
   Avatar,
   ListItemText,
-  Button,
 } from '@material-ui/core';
 import WbSunnyTwoToneIcon from '@material-ui/icons/WbSunnyTwoTone';
 import AnnouncementTwoToneIcon from '@material-ui/icons/AnnouncementTwoTone';
@@ -23,6 +23,7 @@ import FiberNewTwoToneIcon from '@material-ui/icons/FiberNewTwoTone';
 import ChatTwoToneIcon from '@material-ui/icons/ChatTwoTone';
 import ChildCareTwoToneIcon from '@material-ui/icons/ChildCareTwoTone';
 import DirectionsBoatTwoToneIcon from '@material-ui/icons/DirectionsBoatTwoTone';
+import TurPopover from '../components/TurPopover';
 
 const useStyles = makeStyles(() => ({
   gridRoot: {
@@ -39,8 +40,8 @@ const useStyles = makeStyles(() => ({
   avatar: {
     backgroundColor: '#e8eaf6',
   },
-  flag: {
-    width: 24,
+  popover: {
+    flex: 1,
   },
   button: {
     padding: [8, 4],
@@ -76,6 +77,7 @@ const gridOptions = [
         title: 'Прием в Петербурге',
         description: 'групп и индивидуальных туристов',
         icon: <LocationCityTwoToneIcon color="primary"/>,
+        link: 'прием_в_петербурге',
       },
       {
         title: 'Сегодня в городе',
@@ -95,18 +97,18 @@ const gridOptions = [
     subtitle: 'выберите направление',
     type: 'grid',
     options: [
-      {title: 'Россия', flag: 'russia'},
-      {title: 'Финляндия', flag: 'finland'},
-      {title: 'Эстония', flag: 'estonia'},
-      {title: 'Беларусь', flag: 'belarus'},
-      {title: 'Швеция', flag: 'sweden'},
-      {title: 'Латвия', flag: 'latvia'},
-      {title: 'Грузия', flag: 'georgia'},
-      {title: 'Норвегия', flag: 'norway'},
-      {title: 'Литва', flag: 'lithuania'},
-      {title: 'Абхазия', flag: 'abkhazia'},
-      {title: 'Дания', flag: 'denmark'},
-      {title: 'Круизы', icon: <DirectionsBoatTwoToneIcon/>},
+      {title: 'Россия', flag: 'russia', menu: ['Лен. область', 'Москва', 'Золотое кольцо', '...']},
+      {title: 'Финляндия', flag: 'finland', menu: ['Хельсинки', 'Иматра', 'Лаппеенранта', '...']},
+      {title: 'Эстония', flag: 'estonia', menu: ['Таллин', '...']},
+      {title: 'Беларусь', flag: 'belarus', menu: ['Минск', '...']},
+      {title: 'Швеция', flag: 'sweden', menu: ['Стокгольм', '...']},
+      {title: 'Латвия', flag: 'latvia', menu: ['Рига', '...']},
+      {title: 'Грузия', flag: 'georgia', menu: ['Тбилиси', 'Батуми', '...']},
+      {title: 'Норвегия', flag: 'norway', menu: ['Осло', '...']},
+      {title: 'Литва', flag: 'lithuania', menu: ['Вильнюс', '...']},
+      {title: 'Абхазия', flag: 'abkhazia', menu: ['Новый Афон', '...']},
+      {title: 'Дания', flag: 'denmark', menu: ['Копенгаген', '...']},
+      {title: 'Круизы', icon: <DirectionsBoatTwoToneIcon/>, menu: ['Морские', 'Речные', '...']},
     ]
   },
   {
@@ -164,7 +166,7 @@ export const HomePage = () => {
                     <List className={classes.root}>
                       {column.options.map((item, index) => (
                         <React.Fragment key={index}>
-                          <ListItem button alignItems="flex-start">
+                          <ListItem button component={Link} alignItems="flex-start" to={item.link || ''}>
                             <ListItemAvatar>
                               <Avatar className={classes.avatar}>
                                 {item.icon}
@@ -184,17 +186,11 @@ export const HomePage = () => {
                     <Grid container spacing={1}>
                       {column.options.map((item) => (
                         <Grid className={classes.grid} key={item.title} item md={4} xs={12}>
-                          <Button
-                            variant="outlined"
-                            color="primary"
-                            size="large"
-                            className={classes.button}
-                            startIcon={item.flag
-                              ? <img className={classes.flag} src={`/flags/${item.flag}.svg`} alt={item.flag}/>
-                              : item.icon}
-                          >
-                            {item.title}
-                          </Button>
+                          <TurPopover
+                            className={classes.popover}
+                            classes={classes}
+                            item={item}
+                          />
                         </Grid>
                       ))}
                     </Grid>

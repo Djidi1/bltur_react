@@ -12,7 +12,8 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { HomePage } from './pages';
+import { HomePage } from './pages/home';
+import { InSpb } from './pages/inSpb';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,6 +37,7 @@ export default function App() {
             renders the first one that matches the current URL. */}
                 <Switch>
                   <Route exact path="/" component={HomePage} />
+                  <Route path="/прием_в_петербурге" component={InSpb} />
                   <Route path="/корпорат" component={About} />
                   <Route path="/школьная" component={Users} />
                 </Switch>

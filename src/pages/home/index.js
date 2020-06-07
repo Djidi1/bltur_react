@@ -163,8 +163,8 @@ export const HomePage = () => {
                   {column.type === 'list' && (
                     <List className={classes.root}>
                       {column.options.map((item, index) => (
-                        <>
-                          <ListItem button  alignItems="flex-start">
+                        <React.Fragment key={index}>
+                          <ListItem button alignItems="flex-start">
                             <ListItemAvatar>
                               <Avatar className={classes.avatar}>
                                 {item.icon}
@@ -176,7 +176,7 @@ export const HomePage = () => {
                             />
                           </ListItem>
                           {(index + 1) < column.options.length && <Divider variant="inset" component="li"/>}
-                        </>
+                        </React.Fragment>
                       ))}
                     </List>
                   )}

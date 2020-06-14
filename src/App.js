@@ -48,7 +48,7 @@ export default function App() {
             renders the first one that matches the current URL. */}
                 <Switch>
                   {routes.map((route) => (
-                    <Route exact={route.exact} path={route.path} component={route.component} />
+                    <Route key={route.path} exact={route.exact} path={route.path} component={route.component} />
                   ))}
                 </Switch>
               </Grid>

@@ -1,8 +1,8 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
-import {isString} from "next/dist/build/webpack/plugins/jsconfig-paths-plugin";
 import {
   Card, CardContent, CardHeader,
   Typography, Divider,
@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
   cardHeader: {
     textAlign: 'center',
     background: '#2196F3',
+    color: '#fff',
+  },
+  cardHeaderLink: {
     color: '#fff',
   },
   CardContent: {
@@ -72,6 +75,10 @@ export const InSpb = () => {
     key: 'page_to_spb',
     title: 'Прием в Санкт-Петербурге',
     subtitle: 'Для индивидуальных гостей и мини-групп до 6 человек',
+    subLink: {
+      title: 'Возможно ВАС заинтересует экскурсионное обслуживание в группе',
+      url: '/сборные_группы',
+    }
   };
 
   const columns = [
@@ -170,6 +177,13 @@ export const InSpb = () => {
               {pageData.subtitle && (
                 <Typography variant='body2'>{pageData.subtitle}</Typography>
               )}
+              {pageData.subLink && (
+                <Typography
+                  className={classes.cardHeaderLink}
+                  component={Link}
+                  to={pageData.subLink.url || ''}
+                  variant='body2'>{pageData.subLink.title}</Typography>
+              )}
             </>
           )}
         >
@@ -185,7 +199,7 @@ export const InSpb = () => {
               >
                 <h3 className={classes.columnTitle}>{column.title}</h3>
                 {column.items && column.items.map(item => {
-                  if (isString(item)) {
+                  if (Object.prototype.toString.call(item) === "[object String]") {
                     return <li>{ item }</li>;
                   } else if (item.links) {
                     return (

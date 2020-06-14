@@ -10,6 +10,13 @@ import MuiLink from '@material-ui/core/Link';
 import { TurCarousel } from "./TurCarousel";
 
 const useStyles = makeStyles((theme) => ({
+  header: {
+    padding: 0,
+    margin: '0 -20px',
+    borderRadius: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    backdropFilter: 'blur(8px)',
+  },
   toolbarSecondary: {
     justifyContent: 'space-between',
     overflowX: 'auto',
@@ -34,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "flex-end",
     textAlign: "end",
   },
+  subHeader: {
+    background: '#FAFAFA',
+  },
   logoWrapper: {
     padding: 8,
   },
@@ -51,7 +61,7 @@ export default function Header(props) {
   };
 
   return (
-    <>
+    <div className={classes.header}>
       <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
         {sections.map((section) => (
             <MuiLink
@@ -67,7 +77,7 @@ export default function Header(props) {
             </MuiLink>
         ))}
       </Toolbar>
-      <Grid container>
+      <Grid className={classes.subHeader} container>
         <Grid className={classes.logoWrapper} item md={6} xs={12}>
           <Image
             style={logoStyle}
@@ -86,7 +96,7 @@ export default function Header(props) {
         </Grid>
       </Grid>
       <TurCarousel />
-    </>
+    </div>
   );
 }
 

@@ -6,7 +6,8 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
   media: {
-    height: 210,
+    height: '20vw',
+    borderRadius: '0 0 4px 4px',
   },
 });
 
@@ -30,10 +31,8 @@ export const TurCarousel = () => {
   ];
 
   return (
-    <Carousel>
-      {
-        items.map( item => <Item key={item.key} item={item} /> )
-      }
+    <Carousel animation="fade" indicators={false}>
+      { items.map(item => <Item key={item.key} item={item} />) }
     </Carousel>
   )
 }

@@ -37,6 +37,9 @@ const useStyles = makeStyles(() => ({
     background: '#2196F3',
     color: '#fff',
   },
+  cardHeaderLink: {
+    color: '#fff',
+  },
   avatar: {
     backgroundColor: '#e8eaf6',
   },
@@ -95,6 +98,7 @@ const gridOptions = [
     key: 'col_to_spb',
     title: 'из Санкт-Петербурга',
     subtitle: 'выберите направление',
+    link: 'из_петербурга',
     type: 'grid',
     options: [
       {title: 'Россия', flag: 'russia', menu: ['Лен. область', 'Москва', 'Золотое кольцо', '...']},
@@ -156,7 +160,16 @@ export const HomePage = () => {
                   title={(
                     <>
                       <Typography variant='h5'>{column.title}</Typography>
-                      <Typography variant='body2'>{column.subtitle}</Typography>
+                      {column.subtitle && (
+                        <Typography
+                          variant='body2'
+                          className={classes.cardHeaderLink}
+                          component={Link}
+                          to={column.link || ''}
+                        >
+                          {column.subtitle}
+                        </Typography>
+                      )}
                     </>
                   )}
                 >

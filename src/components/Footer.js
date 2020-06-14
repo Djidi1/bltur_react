@@ -15,11 +15,13 @@ function Copyright() {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   footer: {
-    backgroundColor: theme.palette.background.paper,
-    // marginTop: theme.spacing(8),
-    padding: theme.spacing(6, 0),
+    padding: '16px 0',
+    marginTop: 16,
+    borderRadius: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    backdropFilter: 'blur(8px)',
   },
 }));
 
@@ -28,8 +30,8 @@ export default function Footer(props) {
   const { description, title } = props;
 
   return (
-    <footer className={classes.footer}>
-      <Container maxWidth="lg">
+    <footer>
+      <Container className={classes.footer} maxWidth="lg">
         <Typography variant="h6" align="center" gutterBottom>
           {title}
         </Typography>

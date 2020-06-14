@@ -6,28 +6,39 @@ import {
 } from "react-router-dom";
 import AppTheme from './components/AppTheme';
 import { sections } from './helpers/constans'
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
+import { routes } from "./routes/routes";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { HomePage } from './pages/home';
-import { InSpb } from './pages/inSpb';
+
 
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    background: 'url(/images/balticsea.jpg) no-repeat',
+    backgroundSize: 'cover',
+    backgroundAttachment: 'fixed',
+  },
   mainGrid: {
-    marginTop: theme.spacing(3),
+    padding: 0,
+    margin: '0 -20px',
+    borderRadius: 4,
+    backdropFilter: 'blur(8px)',
+    marginTop: theme.spacing(2),
   },
 }));
 
 export default function App() {
   const classes = useStyles();
+
+
   return (
     <Router>
       <AppTheme>
-        <>
+        <div className={classes.root}>
           <CssBaseline />
           <Container maxWidth="lg">
             <Header title="Балтик Лайнс Тур" sections={sections} />
@@ -36,25 +47,16 @@ export default function App() {
                 {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
                 <Switch>
-                  <Route exact path="/" component={HomePage} />
-                  <Route path="/прием_в_петербурге" component={InSpb} />
-                  <Route path="/корпорат" component={About} />
-                  <Route path="/школьная" component={Users} />
+                  {routes.map((route) => (
+                    <Route exact={route.exact} path={route.path} component={route.component} />
+                  ))}
                 </Switch>
               </Grid>
             </main>
           </Container>
           <Footer title="" description="" />
-        </>
+        </div>
       </AppTheme>
     </Router>
   );
-}
-
-function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
 }

@@ -49,7 +49,7 @@ export default function TurPopover(props) {
           : item.icon}
         aria-owns={anchorEl ? item.title : undefined}
         aria-haspopup="true"
-        onMouseOver={handlePopoverOpen}
+        onClick={handlePopoverOpen}
       >
         {item.title}
       </Button>

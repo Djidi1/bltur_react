@@ -7,6 +7,7 @@ import {
   Card, CardContent, CardHeader,
   Typography,
 } from "@material-ui/core";
+import { AppBreadcrumbs } from "../../components/AppBreadcrumbs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,17 +25,20 @@ const useStyles = makeStyles((theme) => ({
     color: '#fff',
   },
   CardContent: {
+    minHeight: '40vh',
     textAlign: 'center',
-    padding: 0,
-    '&:last-child': {
-      paddingBottom: 0,
-    }
+    padding: 16,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   column: {
     padding: theme.spacing(2),
     color: theme.palette.text.secondary,
-    textAlign: "left",
-
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "underline",
+    }
   },
   columnTitle: {
     margin: "16px 0",
@@ -54,50 +58,41 @@ const useStyles = makeStyles((theme) => ({
   columnBgOrange: {
     backgroundColor: "#FFE0B2",
   },
-  alert: {
-    margin: '24px 0',
-    '& .MuiAlert-icon': {
-      position: "absolute",
-    },
-    '& .MuiAlertTitle-root': {
-      textAlign: "center",
-    }
-  },
 }));
 
-export const InSpb = () => {
+export const InSpb = ({location}) => {
   const classes = useStyles();
 
   const pageData = {
     key: 'page_to_spb',
     title: 'Прием в Санкт-Петербурге',
-    subtitle: 'Для индивидуальных гостей и мини-групп до 6 человек',
-    subLink: {
-      title: 'Возможно ВАС заинтересует экскурсионное обслуживание в группе',
-      url: '/сборные_группы',
-    }
+    subtitle: 'групп и индивидуальных туристов',
   };
 
   const columns = [
     {
-      key: 'hotels',
-      title: 'Размещение',
-      background: 'Green',
+      key: 'mini-groups',
+      title: 'Для индивидуальных гостей и мини-групп',
+      background: 'Orange',
+      url: '/прием_в_петербурге/мини-группы',
     },
     {
-      key: 'museum',
-      title: 'Экскурсии и музеи',
-      background: 'Pink',
-    },
-    {
-      key: 'taxi',
-      title: 'Заказ транспорта',
+      key: 'org-groups',
+      title: 'Для организованных групп',
       background: 'Blue',
+      url: '/прием_в_петербурге/организованные-группы',
+    },
+    {
+      key: 'set-of-groups',
+      title: 'Сборные группы',
+      background: 'Green',
+      url: '/прием_в_петербурге/сборные-группы',
     },
   ];
 
   return (
     <div className={classes.root}>
+      <AppBreadcrumbs location={location} />
       <Card className={classes.card}>
         <CardHeader
           className={classes.cardHeader}
@@ -125,7 +120,9 @@ export const InSpb = () => {
                 key={column.key}
                 className={clsx(classes.column, classes[`columnBg${column.background}`])}
                 item
-                xs={12} md={3}
+                xs={12} md={4}
+                component={Link}
+                to={column.url}
               >
                 <h3 className={classes.columnTitle}>{column.title}</h3>
               </Grid>

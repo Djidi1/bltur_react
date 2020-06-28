@@ -1,18 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {makeStyles} from '@material-ui/core/styles';
+import {unescapeHTML} from '../helpers/utils';
 import {
-  Card,
-  CardHeader,
-  CardContent,
+  Button,
+  Card, CardHeader, CardContent,
   Grid,
   Typography,
-  List,
-  ListItem,
+  List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText,
   Divider,
-  ListItemAvatar,
   Avatar,
-  ListItemText,
 } from '@material-ui/core';
 import WbSunnyTwoToneIcon from '@material-ui/icons/WbSunnyTwoTone';
 import AnnouncementTwoToneIcon from '@material-ui/icons/AnnouncementTwoTone';
@@ -24,6 +21,7 @@ import ChatTwoToneIcon from '@material-ui/icons/ChatTwoTone';
 import ChildCareTwoToneIcon from '@material-ui/icons/ChildCareTwoTone';
 import DirectionsBoatTwoToneIcon from '@material-ui/icons/DirectionsBoatTwoTone';
 import TurPopover from '../components/TurPopover';
+import TurDialog from '../components/TurDialog';
 
 const useStyles = makeStyles(() => ({
   gridRoot: {
@@ -64,6 +62,74 @@ const useStyles = makeStyles(() => ({
   }
 
 }));
+
+const NearestTours = () => {
+  const classes = useStyles();
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [items, setItems] = useState([]);
+
+  const [openDetails, setOpenDetails] = useState(false);
+  const [tourDetails, setTourDetails] = useState(null);
+  const [tourTitle, setTourTitle] = useState(null);
+
+  const handleClickOpen = ({overview, tur_name}) => () => {
+    setTourDetails(unescapeHTML(overview));
+    setTourTitle(tur_name);
+    setOpenDetails(true);
+  };
+  const handleClose = () => {
+    setOpenDetails(false);
+  };
+
+  useEffect(() => {
+    fetch("http://bltur.ru/turs/api-1/type_data-turs")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          console.log(result);
+          setIsLoaded(true);
+          setItems(result);
+        },
+        (error) => {
+          setIsLoaded(true);
+          setError(error);
+        }
+      )
+  }, [])
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  } else if (!isLoaded) {
+    return <div>Loading...</div>;
+  } else {
+    return (
+      <>
+        <TurDialog open={openDetails} data={tourDetails} title={tourTitle} handleClose={handleClose} />
+        <List className={classes.root} dense>
+          {items.slice(0, 3).map(item => (
+            <ListItem key={item.id}>
+              <ListItemText
+                primary={item.tur_name}
+                secondary={item.tur_date}
+              />
+              <ListItemSecondaryAction>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="primary"
+                  onClick={handleClickOpen(item)}
+                >
+                  Детали
+                </Button>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
+        </List>
+      </>
+    );
+  }
+}
 
 const gridOptions = [
   {
@@ -119,6 +185,7 @@ const gridOptions = [
     key: 'col_turs',
     title: 'Ближайшие туры и экскурсии',
     type: 'list',
+    tours: <NearestTours />,
     options: [
       {
         title: 'На праздники',
@@ -175,6 +242,7 @@ export const HomePage = () => {
                 >
                 </CardHeader>
                 <CardContent>
+                  {column.tours || null}
                   {column.type === 'list' && (
                     <List className={classes.root}>
                       {column.options.map((item, index) => (
